@@ -3,7 +3,7 @@
 **Last updated:** 2026-06-12
 **Effective:** 2026-06-12
 **Applies to:** BreezyDrive, an iOS application published by the BreezyDrive maintainers ("we", "us", "our").
-**Public URL (production):** https://breezydrive.app/legal/terms
+**Public URL (production):** https://github.com/eddy2195/BreezyDriveDocs/blob/main/terms-of-service.md
 
 By installing or using BreezyDrive you ("you", "the user") agree to
 these Terms. If you do not agree, do not install the app.
@@ -128,7 +128,7 @@ practicable.
 ## 8. Privacy
 
 Our handling of data is governed by the Privacy Policy linked from the
-app and hosted at <https://breezydrive.app/legal/privacy>.
+app and hosted at <https://github.com/eddy2195/BreezyDriveDocs/blob/main/privacy-policy.md>.
 
 ---
 
