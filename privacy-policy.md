@@ -47,7 +47,7 @@ GDPR rights request within 30 days, as required by Article 12(3).
 | Recent searches (last 20 destinations, with their resolved coordinates) | On-device SwiftData store | No | No | Speed up subsequent typing. |
 | Saved trips (only when you save one) | On-device SwiftData store | No | No | One-tap re-plan. |
 | Weather and route caches (forecast payloads keyed by coordinate, route polylines) | On-device SwiftData store, with expiry timestamps; stale rows are pruned automatically at launch | No | No | Avoid re-downloading the same forecast or re-computing the same route. |
-| Plan-count timestamps (the time you submitted a plan — deliberately nothing else: no origin, no destination) | On-device SwiftData store | No | No | Count free-tier plans in the rolling week. |
+| Plan-count timestamps (the time you submitted a plan — deliberately nothing else: no origin, no destination) | On-device keychain (device-only; never synced to iCloud or other devices) | No | No | Count free-tier plans in the rolling week. Kept in the keychain so the free-tier limit cannot be reset by reinstalling; entries older than 7 days are pruned automatically. |
 | Aggregated, anonymous product-interaction events | Sent to TelemetryDeck while Settings → Privacy → "Share anonymous analytics" is on (it is on by default; turn it off any time) | No | No | Iterate on the score engine and paywall copy. |
 | Purchase metadata (StoreKit transaction IDs, plan identifier) | Sent to Apple and RevenueCat | No | No | Enforce Pro entitlement; restore purchases. |
 | Crash / hang / disk diagnostics (derived from Apple's MetricKit) | Coarse counts only (error domain/code, hang duration buckets, disk-write megabyte buckets) sent through the same TelemetryDeck stream, honoring the same analytics toggle. Stack traces and raw MetricKit payloads are never sent. | No | No | Find the bug that crashed your app. |
@@ -74,6 +74,9 @@ their own policies linked in §5.
   caches, and user preferences live in a SwiftData store inside the
   app's sandbox. They do not leave your device. There is no CloudKit
   or iCloud integration. Uninstalling the app deletes them permanently.
+  (The sole exception is the plan-count timestamps above, which live in
+  the device keychain so the free-tier limit survives a reinstall; they
+  contain no trip content and age out within 7 days.)
 - **No advertising.** We do not run ads in the app. We do not sell ad
   inventory. We do not share your data with advertising networks.
 - **No third-party tracking.** We do not request App Tracking
@@ -131,12 +134,15 @@ We do not currently request any other system permission.
 | Location coordinate from the system | In RAM during the planning task only. Not persisted. |
 | Trip metadata + recent searches + saved trips | Stored on-device until you uninstall the app. (Recent searches are additionally trimmed to the most recent 20.) |
 | Weather and route caches | Stored on-device with expiry timestamps; expired rows are pruned automatically at app launch. Removed entirely on uninstall. |
-| Plan-count timestamps | Stored on-device; only timestamps, no trip content. Removed on uninstall. |
+| Plan-count timestamps | Stored in the on-device keychain; only timestamps, no trip content. Entries older than 7 days are pruned automatically. May persist across an uninstall/reinstall on the same device — this is how the free-tier limit is enforced — and never leaves the device. |
 | StoreKit transaction history | Held by Apple and RevenueCat for as long as their own terms require. We have no way to delete it. |
 | Anonymous telemetry | Held by TelemetryDeck per their retention policy; we do not extract or back it up. |
 
 There is no server-side database for us to "delete a user from". The
-on-device store is yours: uninstalling the app deletes all of it.
+on-device store is yours: uninstalling the app deletes all of it,
+except the keychain-held plan-count timestamps; those stop counting
+toward the limit after 7 days and are deleted the next time the app
+runs (or when the device is erased).
 Development builds additionally expose Settings → Debug → "Flush
 caches" and "Reset all data"; a user-facing "Reset all data" item is
 planned for v1.1.
@@ -157,8 +163,11 @@ satisfied by uninstalling the app. The longer answer:
   trip-input sheet.
 - **Right to erasure (Art. 17).** Uninstall the app to delete the
   on-device store permanently. Cached forecasts and routes also expire
-  and are pruned automatically. (A user-facing "Reset all data"
-  setting lands with v1.1; development builds already include it.)
+  and are pruned automatically. Plan-count timestamps in the keychain
+  stop counting after 7 days, are deleted the next time the app runs,
+  and contain no content beyond the submission time. (A user-facing
+  "Reset all data" setting lands with v1.1; development builds already
+  include it.)
 - **Right to restrict processing (Art. 18) and right to object
   (Art. 21).** Toggle Settings → Privacy → "Share anonymous
   analytics" off to stop the telemetry stream. The toggle is on by
