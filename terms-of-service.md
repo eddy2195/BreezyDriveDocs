@@ -14,9 +14,11 @@ these Terms. If you do not agree, do not install the app.
 
 BreezyDrive scores candidate departure times for a road trip based on
 projected sun glare, cabin heat, and weather hazards along the route.
-Forecasts are sourced from MET Norway (the Norwegian Meteorological
-Institute); routing and geocoding use Apple MapKit; sun position is
-computed on-device. The scoring is an estimate. You agree that:
+Forecasts are sourced from Apple Weather (WeatherKit), with MET Norway
+(the Norwegian Meteorological Institute) as a backup source when Apple
+Weather is unavailable; routing and geocoding use Apple MapKit; sun
+position is computed on-device. The scoring is an estimate. You agree
+that:
 
 - The forecast you see is a prediction produced by third-party weather
   models and our own scoring math; it is not a guarantee.
@@ -81,11 +83,12 @@ You may use BreezyDrive for personal trip planning. You may not:
 BreezyDrive's source code is the property of the maintainers. The
 trademarks "BreezyDrive" and any associated logos are ours.
 
-Weather forecast data is provided by MET Norway / Yr under the
+Weather forecast data is provided primarily by Apple Weather, subject
+to Apple's [attribution and legal requirements](https://weatherkit.apple.com/legal-attribution.html),
+and — when Apple Weather is unavailable — by MET Norway / Yr under the
 [CC BY 4.0 / NLOD licence](https://api.met.no/doc/License). Attribution
-is displayed in Settings → About, as MET Norway's terms require. The
-underlying weather data remains the property of its respective rights
-holders.
+for both sources is displayed in Settings → About. The underlying
+weather data remains the property of its respective rights holders.
 
 ---
 
