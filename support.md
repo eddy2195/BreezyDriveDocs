@@ -13,7 +13,7 @@ You can also reach us from inside the app: **Settings → Send Feedback**.
 ## Frequently asked questions
 
 **Where does the weather data come from?**
-Forecasts are provided by [MET Norway](https://api.met.no/doc/License) (the Norwegian Meteorological Institute).
+Forecasts are provided by Apple Weather Kit and [MET Norway](https://api.met.no/doc/License) (the Norwegian Meteorological Institute).
 
 **How do I manage or cancel my subscription?**
 Subscriptions are handled by Apple. Open **Settings → Manage Subscription** in the app, or go to [apps.apple.com/account/subscriptions](https://apps.apple.com/account/subscriptions).
